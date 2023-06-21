@@ -1,3 +1,4 @@
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -15,7 +16,7 @@ class LeNet(nn.Module):
     def forward(self, x):
         x = self.pool(F.relu(self.conv1(x))) # input(3, 32, 32) conv_output(6, 28, 28) pool_output(6, 14, 14)
         x = self.pool(F.relu(self.conv2(x))) # conv_output(16, 10, 10) pool_output(16, 5, 5)
-        x = torch.flatten(x, 1)              # flatten all dimensions except batch, same view(-1, 32*5*5)
+        x = torch.flatten(x, 1)              # flatten all dimensions except batch, same as x.view(-1, 16*5*5)
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
         x = self.fc3(x)
