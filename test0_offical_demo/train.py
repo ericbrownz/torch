@@ -9,24 +9,24 @@ from model import LeNet
 import torch.nn as nn
 import torch.optim as optim
 
+
 def main():
     transform = transforms.Compose(
         [transforms.ToTensor(),
-        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]) # (input-0.5)*0.5
+         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])  # (input-0.5)*0.5
 
     trainset = torchvision.datasets.CIFAR10(root='./data', train=True,
                                             download=False, transform=transform)
     trainloader = torch.utils.data.DataLoader(trainset, batch_size=36,
-                                            shuffle=True, num_workers=2)
+                                              shuffle=True, num_workers=2)
 
     testset = torchvision.datasets.CIFAR10(root='./data', train=False,
-                                        download=False, transform=transform)
+                                           download=False, transform=transform)
     testloader = torch.utils.data.DataLoader(testset, batch_size=5000,
-                                            shuffle=False, num_workers=2)
+                                             shuffle=False, num_workers=2)
 
     classes = ('plane', 'car', 'bird', 'cat',
-            'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
-
+               'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
     """
     # functions to show an image
@@ -50,7 +50,6 @@ def main():
     # get some random test images
     test_dataiter = iter(testloader)
     test_images, test_labels = next(test_dataiter)
-
 
     net = LeNet()
     criterion = nn.CrossEntropyLoss()   # loss func
