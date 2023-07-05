@@ -11,6 +11,8 @@
 
     - [x] AlexNet
 
+    - [x] VGG
+
 - Object Detection
 
 - Segmentation
