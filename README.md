@@ -13,6 +13,8 @@
 
     - [x] VGG
 
+    - [x] GoogLeNet
+
 - Object Detection
 
 - Segmentation
