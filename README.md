@@ -15,6 +15,8 @@
 
     - [x] GoogLeNet
 
+    - [x] ResNet
+
 - Object Detection
 
 - Segmentation

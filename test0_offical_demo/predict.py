@@ -23,6 +23,8 @@ def main():
 
     with torch.no_grad():
         outputs = net(im)
+        print(outputs)
+        print(torch.max(outputs, 1))
         _, predict = torch.max(outputs, 1)
     print(classes[int(predict.numpy())])
 
