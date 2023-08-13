@@ -4,6 +4,7 @@ import torchvision.transforms as transforms
 
 # import matplotlib.pyplot as plt
 # import numpy as np
+import os
 
 from model import LeNet
 import torch.nn as nn
@@ -15,12 +16,14 @@ def main():
         [transforms.ToTensor(),
          transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])  # (input-0.5)*0.5
 
-    trainset = torchvision.datasets.CIFAR10(root='./data', train=True,
+    data_root = os.path.abspath(os.path.join(__file__, "../../.."))  # get repo root path
+    cifar_path = os.path.join(data_root, "data_set", )  # flower dataset path
+    trainset = torchvision.datasets.CIFAR10(root=cifar_path, train=True,
                                             download=False, transform=transform)
     trainloader = torch.utils.data.DataLoader(trainset, batch_size=36,
                                               shuffle=True, num_workers=2)
 
-    testset = torchvision.datasets.CIFAR10(root='./data', train=False,
+    testset = torchvision.datasets.CIFAR10(root=cifar_path, train=False,
                                            download=False, transform=transform)
     testloader = torch.utils.data.DataLoader(testset, batch_size=5000,
                                              shuffle=False, num_workers=2)

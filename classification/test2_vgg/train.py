@@ -5,10 +5,8 @@ import json
 import torch
 from torchvision import transforms, datasets
 
-# import matplotlib.pyplot as plt
-# import numpy as np
+from model import vgg
 
-from model import AlexNet
 import torch.nn as nn
 import torch.optim as optim
 
@@ -24,11 +22,11 @@ def main():
                                      transforms.RandomHorizontalFlip(),
                                      transforms.ToTensor(),
                                      transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]),
-        "val": transforms.Compose([transforms.Resize((224, 224)),  # cannot 224, must (224, 224)
+        "val": transforms.Compose([transforms.Resize((224, 224)),
                                    transforms.ToTensor(),
                                    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])}
 
-    data_root = os.path.abspath(os.path.join(__file__, "../.."))  # get repo root path
+    data_root = os.path.abspath(os.path.join(__file__, "../../.."))  # get repo root path
     image_path = os.path.join(data_root, "data_set", "flower_data")  # flower dataset path
     assert os.path.exists(image_path), "{} path does not exist.".format(image_path)
 
@@ -57,35 +55,20 @@ def main():
                                             transform=data_transform["val"])
     val_num = len(validate_dataset)
     validate_loader = torch.utils.data.DataLoader(validate_dataset,
-                                                  batch_size=4, shuffle=False,
+                                                  batch_size=batch_size, shuffle=False,
                                                   num_workers=num_thread)
 
     print("using {} images for training, {} images for validation.".format(train_num,
                                                                            val_num))
 
-    """
-    test_data_iter = iter(validate_loader)
-    test_image, test_label = next(test_data_iter)   # same as test_data_iter.__next__()
-
-    def imshow(img):
-        img = img / 2 + 0.5  # unnormalize
-        npimg = img.numpy()
-        plt.imshow(np.transpose(npimg, (1, 2, 0)))
-        plt.show()
-    
-    print(' '.join('%5s' % cla_dict[test_label[j].item()] for j in range(4)))
-    imshow(utils.make_grid(test_image))
-    """
-
-    net = AlexNet(num_classes=5, init_weights=True)
-
+    model_name = "vgg16"
+    net = vgg(model_name=model_name, num_classes=5, init_weights=True)
     net.to(device)
     criterion = nn.CrossEntropyLoss()
-    # pata = list(net.parameters())
-    optimizer = optim.Adam(net.parameters(), lr=0.0002)  # [epoch 10] train_loss: 0.815  val_accuracy: 0.701
+    optimizer = optim.Adam(net.parameters(), lr=0.0001)  # [epoch 29] train_loss: 0.640  val_accuracy: 0.734
 
-    epochs = 10
-    save_path = './alexnet_flower_photos.pth'
+    epochs = 30
+    save_path = './{}_flower_photos.pth'.format(model_name)
     best_acc = 0.0
     train_steps = len(train_loader)
 
